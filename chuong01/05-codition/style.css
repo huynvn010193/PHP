@@ -1,0 +1,46 @@
+@CHARSET "UTF-8";
+*
+{
+	margin:0px;
+	padding :0px;
+}
+
+.content
+{
+	margin:20px auto;
+	width: 600px;
+	padding:10px;
+	border: 1px solid #999;
+}
+.content h1
+{
+	color:red;
+	text-align:center;
+}
+.content div.row
+{
+	margin-top:20px;
+	
+}
+.content div.row span
+{
+	display:inline-block;
+	width:225px;
+	text-align:right;
+}
+.content div.row input[type=text]
+{
+	padding:3px 5px;
+}
+.content div.row input[type=submit]
+{
+	padding:3px 5px;
+	margin: 0px auto 20px auto;
+	display:block;
+}
+.content div.row p
+{
+	font-weight:bold;
+	font-size:20px;
+	text-align:center;
+}

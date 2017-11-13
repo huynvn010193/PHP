@@ -1,0 +1,100 @@
+@CHARSET "UTF-8";
+*
+{
+	margin:0px;
+	padding :0px;
+}
+/*===============CONTENT=================*/
+.content
+{
+	margin:20px auto;
+	width: 600px;
+	padding:10px;
+	border: 1px solid #999;
+	background:url("images/notebook_background.jpg") no-repeat;
+	min-height:200px;
+}
+.content h1
+{
+	color:red;
+	text-align:center;
+}
+
+.content ul
+{
+	margin:23px 0px 0px 100px;
+}
+.content ul li
+{
+	margin-top:5px;
+	list-style:decimal inside;
+}
+/*===============CONTENT 2=================*/
+.content2
+{
+	margin:20px auto;
+	width: 800px;
+	padding:10px;
+	border: 1px solid #999;
+}
+.content2 h1
+{
+	color:red;
+	text-align:center;
+}
+
+.content2 ul
+{
+	margin:23px;
+}
+.content2 ul li
+{
+	margin-top:5px;
+	list-style:none;
+	display:inline-block;
+	margin-left:30px;
+}
+.content2 ul li a
+{
+	display:block;
+	width:210px;
+	height:188px;
+}
+.content2 .result
+{
+	margin-left:320px;
+}
+/*===============CONTENT 3=================*/
+.content3
+{
+	margin:20px auto;
+	width: 300px;
+	padding:10px;
+	border: 1px solid #999;
+}
+.content3 h1
+{
+	color:red;
+	text-align:center;
+}
+.content3 div.image
+{
+	margin:20px 0px;
+	text-align:center;
+}
+.content3 div.image img
+{
+	margin:10px 0px;
+}
+.content3 div.image a
+{
+	display:inline-block;
+	text-decoration:none;
+	background-color:#686f97;
+	padding:3px 10px;
+	color:#fff;
+}
+.content3 div.image a:hover
+{
+	color:#f6f312;
+}
