@@ -1,3 +1,7 @@
+<?php 
+	
+		
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,17 +12,17 @@
 </head>
 <body>
 <?php
+	require_once 'connect.php';
 	$checkbox	= $_POST['checkbox'];
 	if(!empty($checkbox)){
-		foreach($checkbox as $key => $value){
-			@unlink("./files/$value.txt");
-		}
+		$total = $database->delete($checkbox);
 	}
+	$result = '<p>'.$total.' dòng dữ liệu đã bị xóa! Click vào <a href="index.php">đây</a> đê quay về trang chủ.</p>  ';
 ?>
 	<div id="wrapper">
     	<div class="title">PHP FILE</div>
         <div id="form">   
-       		<p>Dữ liệu đã được xóa thành công! Click vào <a href="index.php">đây</a> đê quay về trang chủ.</p>       
+       		 <?php echo $result?>
         </div>
     </div>
 </body>

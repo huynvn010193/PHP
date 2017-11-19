@@ -15,47 +15,55 @@
 </head>
 <body>
 <?php
+	require_once 'connect.php';
 	$id	= $_GET['id']; 
-	$content	= file_get_contents("./files/$id.txt");
-	$content	= explode('||', $content);
-	$title				= $content[0];
-	$description		= $content[1];
+	$query  = "SELECT * FROM `group` WHERE `id` = '$id'";
+	$item = $database->singleRecord($query);
 	
-	$flag = false;
-	if(isset($_POST['id'])){
-		$id	= $_POST['id'];
-		@unlink("./files/$id.txt");
-		$flag = true;
-	}
-?>
-	<div id="wrapper">
-    	<div class="title">PHP FILE</div>
-        <div id="form">   
-        <?php if($flag==false) { ?>
-        <form action="" method="post" name="main-form">
-			<div class="row">
-				<p>File:</p>
-				<span><?php echo realpath("./files/$id.txt");?></span>
+	if(!empty($item))
+	{
+		$status = ($item['status'] == 0) ? 'Inactive':'Active';
+		$xhtml = '<div class="row">
+				<p>ID:</p> '.$item['id'].'
 			</div>
 			<div class="row">
-				<p>Title:</p>
-				<span><?php echo $title;?></span>
+				<p>Group Name:</p>'.$item['name'].'
 			</div>
 			<div class="row">
-				<p>Description:</p>
-				<span><?php echo $description;?></span>
+				<p>Status:</p>'.$status.'
+			</div>
+			<div class="row">
+				<p>Ordering:</p>'.$item["ordering"].'
 			</div>
 			<div class="row">
 				<input type="hidden" name="id" value="<?php echo $id;?>">
 				<input type="submit" value="Delete" name="submit">
 				<input type="button" value="Cancel" name="cancel" id="cancel-button">
-			</div>
-		</form>    
-		<?php
-			}else{
-				echo '<p>Dữ liệu đã được xóa thành công! Click vào <a href="index.php">đây</a> để quay về trang chủ</p>';
-			} 
-		?>     
+			</div>';
+	}
+	else
+	{
+		$xhtml = "Không có nội dung này";
+	}
+	
+	$notice = "";
+	if(isset($_POST['submit']))
+	{
+		$id = $_POST['id'];
+		$query = "DELETE FROM `group` WHERE `id` = '$id'";
+		$database->query($query);
+		$xhtml = "Success";
+	}
+	
+?>
+	<div id="wrapper">
+    	<div class="title">PHP FILE</div>
+        <div id="form">
+        <form action="" method="post" name="main-form">
+        	<?php 
+        		echo $xhtml;
+			?>
+		</form>
         </div>
         
     </div>

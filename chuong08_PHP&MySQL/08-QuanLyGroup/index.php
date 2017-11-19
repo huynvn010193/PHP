@@ -1,13 +1,5 @@
 <?php 
-	require_once 'class/Database.class.php';
-	$params = array(
-			'server' => 'localhost',
-			'username' => 'root',
-			'password' => '',
-			'database' => 'manage_user',
-			'table'	   => 'group'
-	);
-	$database = new Database($params);
+	require_once 'connect.php';
 	
 	$query[] = "SELECT `g`.`id`, `g`.`name`, `g`.`status`,`g`.`ordering`, COUNT(`u`.`id`) AS total";
 	$query[] = " FROM `group` AS `g` LEFT JOIN `user` AS `u` ON `g`.`id` = `u`.`group_id`";
@@ -52,7 +44,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css" href="css/style.css">
-<title>PHP FILE - Index</title>
+<title>Manage User</title>
 <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -64,7 +56,7 @@
 </head>
 <body>
 	<div id="wrapper">
-    	<div class="title">PHP FILE - Index</div>
+    	<div class="title">Manage User</div>
         <div class="list">   
 			<form action="multy-delete.php" method="post" name="main-form" id="main-form">
 	         	
@@ -86,8 +78,8 @@
     	</div>
         
 	        <div id="area-button">
-	        	<a href="add.php">Add File</a>
-	        	<a id="multy-delete" href="#">Delete File</a>
+	        	<a href="add.php">Add Group</a>
+	        	<a id="multy-delete" href="#">Delete Group</a>
 	        </div>
     
     </div>
