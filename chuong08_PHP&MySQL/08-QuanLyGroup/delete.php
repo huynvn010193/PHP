@@ -36,7 +36,7 @@
 				<p>Ordering:</p>'.$item["ordering"].'
 			</div>
 			<div class="row">
-				<input type="hidden" name="id" value="<?php echo $id;?>">
+				<input type="hidden" name="id" value="'.$id.'">
 				<input type="submit" value="Delete" name="submit">
 				<input type="button" value="Cancel" name="cancel" id="cancel-button">
 			</div>';

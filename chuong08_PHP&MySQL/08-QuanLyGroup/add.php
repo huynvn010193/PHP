@@ -1,3 +1,29 @@
+<?php
+	require 'class/Validate.class.php';
+	require_once 'connect.php';
+	$error 			= "";
+	$outValidate 	= array();
+	$success = "";
+	if(!empty($_POST))
+	{
+		$validate = new Validate($_POST);
+		$validate 	->addRule('name','string',2,50)
+					->addRule('ordering','int',1,10);
+		$validate -> run();
+		$outValidate = $validate->getResult();
+		
+		if(!$validate->isValid())
+		{
+			$error = $validate->showErrors();
+		}
+		else
+		{
+			$database -> insert($outValidate);
+			$success = '<div class="success">Success</div>';
+		}
+		
+	}
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -5,74 +31,36 @@
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <title>PHP FILE - ADD</title>
 <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
-<script type="text/javascript">
-	$(document).ready(function(){
-		$('#cancel-button').click(function(){
-			window.location = 'index.php';
-		});
-	});
-</script>
+<script type="text/javascript" src="js/my-js.js"></script>
 </head>
 <body>
-<?php
-	require_once 'functions.php';
-	
-	$flag	= false;
-	if(isset($_POST['title']) && isset($_POST['description'])){
-		$title			= $_POST['title'];
-		$description	= $_POST['description'];
-		
-		// Error Title
-		$errorTitle = '';
-		if(checkEmpty($title)) 			$errorTitle = '<p class="error">Dữ liệu không được rỗng</p>';
-		if(checkLength($title, 5, 100)) $errorTitle .= '<p class="error">Tiêu đề dài từ 5 đến 100 ký tự</p>';
-		
-		// Error Description
-		$errorDescription = '';
-		if(checkEmpty($description)) 			$errorDescription = '<p class="error">Dữ liệu không được rỗng</p>';
-		if(checkLength($description, 10, 5000)) $errorDescription .= '<p class="error">Nội dung dài từ 10 đến 5000 ký tự</p>';
-		
-		
-		// A-Z, a-z, 0-9: AzG09
-		if($errorTitle == '' && $errorDescription == ''){
-			$data	= $title . '||' . $description;
-			
-			$name = randomString(5);
-			$filename	= './files/' . $name . '.txt';
-			if(file_put_contents($filename, $data)){
-				$title			= '';
-				$description	= '';
-				$flag			= true;
-			}
-		}
-		
-	} 
-?>
 	<div id="wrapper">
-    	<div class="title">PHP FILE - ADD</div>
-        <div id="form">   
+    	<div class="title">ADD-GROUP</div>
+        <div id="form">
+        	<?php 
+        		echo $error . $success;
+        	?>
 			<form action="#" method="post" name="add-form">
 				<div class="row">
-					<p>Title</p>
-					<input type="text" name="title" value="<?php echo $title;?>">
-					<?php echo $errorTitle; ?>
+					<p>Name</p>
+					<input type="text" name="name" value="<?php echo (isset($outValidate['name']))? $outValidate['name']: '' ?>" />
 				</div>
 				
 				<div class="row">
-					<p>Description</p>
-					<textarea name="description" rows="5" cols="100"><?php echo $description;?></textarea>
-					<?php echo $errorDescription?>
+					<p>Status</p>
+					<select name="status" class="status">
+						<option value="1">Active</option>
+						<option value="0">InActive</option>
+					</select>
 				</div>
-				
+				<div class="row">
+					<p>Ordering</p>
+					<input type="text" name="ordering" value="<?php echo (isset($outValidate['ordering']))? $outValidate['ordering']: '' ?>"/>
+				</div>
 				<div class="row">
 					<input type="submit" value="Save" name="submit">
 					<input type="button" value="Cancel" name="cancel" id="cancel-button">
 				</div>
-				
-				<?php
-					if($flag==true) echo '<div class="row"><p>Dữ liệu đã được ghi thành công!</p></div>'; 
-				?>
-								
 			</form>    
         </div>
         

@@ -56,9 +56,7 @@ class Database
 		{
 			$newQuery = $this->createInsertSQL($data);
 			$sql = "INSERT INTO `$this->table`(".$newQuery['cols'].") VALUES (".$newQuery['vals'].")";
-			
 			$this->query($sql);
-			
 		}
 		else
 		{
@@ -66,7 +64,6 @@ class Database
 			{
 				$newQuery = $this->createInsertSQL($value);
 				$sql = "INSERT INTO `$this->table`(".$newQuery['cols'].") VALUES (".$newQuery['vals'].")";
-				
 				$this->query($sql);
 			}
 		}
