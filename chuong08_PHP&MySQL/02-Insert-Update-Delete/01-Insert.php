@@ -9,7 +9,7 @@
 	
 	mysql_select_db('manage_user');
 	$sql = "INSERT INTO `group`(`name`,`status`,`ordering`) VALUES 
-						('Member','1','10'),('Member1','2','20')";
+						('Member3','3','10'),('Member4','2','20')";
 	$result = mysql_query($sql);
 	
 	if($result == true)

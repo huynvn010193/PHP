@@ -1,6 +1,7 @@
 <?php
-	require 'class/Validate.class.php';
+	require_once 'class/Validate.class.php';
 	require_once 'connect.php';
+	require_once 'class/HTML.class.php';
 	$error 			= "";
 	$outValidate 	= array();
 	$success = "";
@@ -21,7 +22,8 @@
 			$database -> insert($outValidate);
 			$success = '<div class="success">Success</div>';
 		}
-		
+		$arrStatus 	= array(0 => "Inactive", 1 => "Active", 2 => "Select status");
+		$status 	= HTML::createSelectbox($arrStatus, 'status', ) 
 	}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
