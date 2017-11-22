@@ -62,6 +62,9 @@ class Validate{
 					case 'email':
 						$this->validateEmail($element);
 						break;
+					case 'status':
+						$this->validateStatus($element);
+						break;
 				}
 			}
 			if(!array_key_exists($element, $this->errors)) {
@@ -70,7 +73,6 @@ class Validate{
 		}
 		$eleNotValidate = array_diff_key($this->source, $this->errors);
 		$this->result	= array_merge($this->result, $eleNotValidate);
-		
 	}
 	
 	// Validate Integer
@@ -128,7 +130,12 @@ class Validate{
 		return true;
 	}
 	
-	
+	// Validate Status
+	private function validateStatus($element){
+		if($this->source[$element] < 0 || $this->source[$element] > 1){
+			$this->errors[$element] = "Select Status";
+		}
+	}
 	
 	
 	

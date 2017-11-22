@@ -5,11 +5,13 @@
 	$error 			= "";
 	$outValidate 	= array();
 	$success = "";
+	$arrStatus 	= array(2 => "Select status", 0 => "Inactive", 1 => "Active");
 	if(!empty($_POST))
 	{
 		$validate = new Validate($_POST);
 		$validate 	->addRule('name','string',2,50)
-					->addRule('ordering','int',1,10);
+					->addRule('ordering','int',1,10)
+					->addRule('status','status');
 		$validate -> run();
 		$outValidate = $validate->getResult();
 		
@@ -22,9 +24,20 @@
 			$database -> insert($outValidate);
 			$success = '<div class="success">Success</div>';
 		}
-		$arrStatus 	= array(0 => "Inactive", 1 => "Active", 2 => "Select status");
-		$status 	= HTML::createSelectbox($arrStatus, 'status', ) 
+		if(isset($outValidate["status"]))
+		{
+			$status = HTML::createSelectbox($arrStatus, 'status',$outValidate["status"]);
+		}
+		else
+		{
+			$status = HTML::createSelectbox($arrStatus, 'status');
+		}
 	}
+	else
+	{
+		$status = HTML::createSelectbox($arrStatus, 'status');
+	}
+	
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -50,10 +63,9 @@
 				
 				<div class="row">
 					<p>Status</p>
-					<select name="status" class="status">
-						<option value="1">Active</option>
-						<option value="0">InActive</option>
-					</select>
+					<?php 
+						echo $status;
+					?>
 				</div>
 				<div class="row">
 					<p>Ordering</p>
