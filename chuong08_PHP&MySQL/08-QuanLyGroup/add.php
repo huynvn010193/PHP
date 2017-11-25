@@ -6,6 +6,11 @@
 	$outValidate 	= array();
 	$success = "";
 	$arrStatus 	= array(2 => "Select status", 0 => "Inactive", 1 => "Active");
+	if(empty($outValidate))
+	{
+		
+	}
+	
 	if(!empty($_POST))
 	{
 		$validate = new Validate($_POST);
