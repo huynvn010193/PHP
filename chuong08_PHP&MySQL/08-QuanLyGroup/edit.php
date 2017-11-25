@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	require_once 'class/Validate.class.php';
 	require_once 'connect.php';
 	require_once 'class/HTML.class.php';
@@ -8,15 +9,44 @@
 	$id = mysql_real_escape_string($id);
 	$query = "SELECT `name`,`status`,`ordering` FROM `group` WHERE id = '".$id."'";
 	$outValidate = $database->singleRecord($query);
+	echo "<pre>";
+		print_r($outValidate);
+	echo "</pre>";
 	$success = "";
 	$arrStatus 	= array(2 => "Select status", 0 => "Inactive", 1 => "Active");
 	if(empty($outValidate))
 	{
 		header('location: error.php');
+		exit();
 	}
+	echo "<pre>";
+		print_r($_POST);
+	echo "</pre>";
 	if(!empty($_POST))
 	{
-		$validate = new Validate($_POST);
+		if(isset($_SESSION["token"]))
+		{
+			if($_SESSION["token"] == $_POST["token"])
+			{
+				echo $_SESSION["token"];
+				unset($_SESSION["token"]);
+				header("location: " .$_SERVER["PHP_SELF"]);
+				exit();
+			}
+			else
+			{
+				$_SESSION["token"] = $_POST["token"];
+			}
+		}
+		else
+		{
+			$_SESSION["token"] = $_POST["token"];
+		}
+		$source = array("name" => $_POST["name"],
+						"status" => $_POST["status"],
+						"ordering" => $_POST["ordering"]
+				);
+		$validate = new Validate($source);
 		$validate 	->addRule('name','string',2,50)
 					->addRule('ordering','int',1,10)
 					->addRule('status','status');
@@ -83,6 +113,7 @@
 				<div class="row">
 					<input type="submit" value="Save" name="submit">
 					<input type="button" value="Cancel" name="cancel" id="cancel-button">
+					<input type="hidden" value="<?php echo time();?>" name = "token" />
 				</div>
 			</form>    
         </div>

@@ -19,6 +19,10 @@ class Validate{
 		{
 			unset($source['submit']);
 		}
+		if(array_key_exists("token", $source))
+		{
+			unset($source['token']);
+		}
 		$this->source = $source;
 	}
 	
