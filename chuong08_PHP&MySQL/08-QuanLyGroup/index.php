@@ -1,5 +1,40 @@
 <?php 
 	require_once 'connect.php';
+	session_start();
+	//MULTY DELETE
+	$messageDelete = "";
+	if(isset($_POST["token"])){
+		if(isset($_SESSION["token"]))
+		{
+			if($_SESSION["token"] == $_POST["token"])
+			{
+				unset($_SESSION["token"]);
+				header("location: " .$_SERVER["PHP_SELF"]);
+				exit();
+			}
+			else
+			{
+				$_SESSION["token"] = $_POST["token"];
+			}
+		}
+		else
+		{
+			$_SESSION["token"] = $_POST["token"];
+		}
+		
+		
+		if(!empty($_POST['checkbox']))
+		{
+			$checkbox	= $_POST['checkbox'];
+			$total = $database->delete($checkbox);
+			$messageDelete = "<div class='success'>Có ".$total." dòng đã xóa</div>";
+		}
+		else
+		{
+			$messageDelete = "<div class='success'>Bạn vui lòng chọn vào các dòng muốn xóa!</div>";
+		}
+	}
+	
 	
 	$query[] = "SELECT `g`.`id`, `g`.`name`, `g`.`status`,`g`.`ordering`, COUNT(`u`.`id`) AS total";
 	$query[] = " FROM `group` AS `g` LEFT JOIN `user` AS `u` ON `g`.`id` = `u`.`group_id`";
@@ -38,21 +73,7 @@
 		$xhtml .= "Dữ liệu đang cập nhật";
 	}
 	
-	//MULTY DELETE
 	
-	$messageDelete = "";
-	if(isset($_POST["token"])){
-		$checkbox	= $_POST['checkbox'];
-		if(!empty($checkbox))
-		{
-			$total = $database->delete($checkbox);
-			$messageDelete = "<div class='success'>Có ".$total." dòng đã xóa</div>";
-		}
-		else
-		{
-			$messageDelete = "<div class='notice'>Bạn vui lòng chọn vào các dòng muốn xóa!</div>";
-		}
-	}
 ?>
 <!DOCTYPE html>
 <html>

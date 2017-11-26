@@ -17,4 +17,8 @@ $(document).ready(function(){
 			this.checked = checkStatus;
 		});
 	});
+	
+	$(".success, .notice, .error").click(function(){
+		$(this).toggle("slow");
+	});
 });
