@@ -9,9 +9,6 @@
 	$id = mysql_real_escape_string($id);
 	$query = "SELECT `name`,`status`,`ordering` FROM `group` WHERE id = '".$id."'";
 	$outValidate = $database->singleRecord($query);
-	echo "<pre>";
-		print_r($outValidate);
-	echo "</pre>";
 	$success = "";
 	$arrStatus 	= array(2 => "Select status", 0 => "Inactive", 1 => "Active");
 	if(empty($outValidate))
@@ -19,23 +16,20 @@
 		header('location: error.php');
 		exit();
 	}
-	echo "<pre>";
-		print_r($_POST);
-	echo "</pre>";
 	if(!empty($_POST))
 	{
 		if(isset($_SESSION["token"]))
 		{
 			if($_SESSION["token"] == $_POST["token"])
 			{
-				echo $_SESSION["token"];
 				unset($_SESSION["token"]);
-				header("location: " .$_SERVER["PHP_SELF"]);
+			 	header("location: " .$_SERVER["PHP_SELF"]."?id=".$id);
 				exit();
 			}
 			else
 			{
 				$_SESSION["token"] = $_POST["token"];
+				echo $_SESSION["token"];
 			}
 		}
 		else
