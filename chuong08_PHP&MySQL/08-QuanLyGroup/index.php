@@ -7,9 +7,9 @@
 	$query = implode(" ", $query);
 	
 	$list = $database->listRecord($query);
+	$xhtml = "";
 	if(!empty($list))
 	{
-		$xhtml = "";
 		$i = 0;
 		foreach ($list as $item)
 		{
@@ -38,6 +38,21 @@
 		$xhtml .= "Dữ liệu đang cập nhật";
 	}
 	
+	//MULTY DELETE
+	
+	$messageDelete = "";
+	if(isset($_POST["token"])){
+		$checkbox	= $_POST['checkbox'];
+		if(!empty($checkbox))
+		{
+			$total = $database->delete($checkbox);
+			$messageDelete = "<div class='success'>Có ".$total." dòng đã xóa</div>";
+		}
+		else
+		{
+			$messageDelete = "<div class='notice'>Bạn vui lòng chọn vào các dòng muốn xóa!</div>";
+		}
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -46,23 +61,18 @@
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <title>Manage User</title>
 <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
-<script type="text/javascript">
-	$(document).ready(function(){
-		$('#multy-delete').click(function(){
-			$('#main-form').submit();
-		});
-	});
-</script>
+<script type="text/javascript" src="js/my-js.js"></script>
 </head>
 <body>
 	<div id="wrapper">
-    	<div class="title">Manage User</div>
-        <div class="list">   
-			<form action="multy-delete.php" method="post" name="main-form" id="main-form">
+    	<div class="title">Manage Group</div>
+        <div class="list">
+        	<?php echo $messageDelete?>
+			<form action="#" method="post" name="main-form" id="main-form">
 	         	
-	         	<div class="row '.$row.'">
+	         	<div class="row" style="text-align:center; font-weight:bold;">
 	            	<p class="no">
-						<input type="checkbox" name="checkbox[]" value="'.$id.'"/>
+						<input type="checkbox" name="check-all" id="check-all"/>
 					</p>
 	                <p class="name">Group Name</p>
 	                <p class="id">Id</p>
@@ -71,6 +81,7 @@
 	                <p class="size">Member</p>
 	                <p class="action">Action</p>
 	            </div>
+	            <input type="hidden" value="<?php echo time();?>" name="token"/>
 				<?php 
 					echo $xhtml;
 				?>
