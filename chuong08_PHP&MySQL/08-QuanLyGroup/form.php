@@ -5,8 +5,42 @@
 	require_once 'class/HTML.class.php';
 	$error 			= "";
 	$outValidate 	= array();
+	
+	$action = $_GET["action"];
+	$flagRedirect = false;
+	$titlePage = "";
+	if($action == "edit")
+	{
+		$id = $_GET["id"];
+		$id = mysql_real_escape_string($id);
+		$query = "SELECT `name`,`status`,`ordering` FROM `group` WHERE id = '".$id."'";
+		$outValidate = $database->singleRecord($query);
+		$linkForm = 'form.php?action=edit&id=' .$id;
+		$titlePage = "EDIT GROUP";
+		if(empty($outValidate))
+		{
+			$flagRedirect = true;
+		}
+	}
+	else if($action == "add")
+	{
+		$titlePage = "ADD GROUP";
+		$linkForm = 'form.php?action=add';
+	}
+	else
+	{
+		$flagRedirect = true;
+	}
+	
+	// Check xem page có tồn tại hay không
+	if($flagRedirect == true)
+	{
+		header('location: error.php');
+		exit();
+	}
+	
 	$success = "";
-	$arrStatus 	= array(2 => "Select status", 0 => "Inactive", 1 => "Active");
+	$arrStatus 	= array(2 => "Select status", 0 => "Inactive", 1 => "Active");	
 	if(!empty($_POST))
 	{
 		if(isset($_SESSION["token"]))
@@ -14,7 +48,7 @@
 			if($_SESSION["token"] == $_POST["token"])
 			{
 				unset($_SESSION["token"]);
-				header("location: " .$_SERVER["PHP_SELF"]);
+			 	header("location: " .$linkForm);
 				exit();
 			}
 			else
@@ -28,21 +62,31 @@
 		}
 		$source = array("name" => $_POST["name"],
 						"status" => $_POST["status"],
-						"ordering" => $_POST["ordering"]
-				);
+						"ordering" => $_POST["ordering"]);
+		
 		$validate = new Validate($source);
 		$validate 	->addRule('name','string',2,50)
 					->addRule('ordering','int',1,10)
 					->addRule('status','status');
 		$validate -> run();
 		$outValidate = $validate->getResult();
+		
 		if(!$validate->isValid())
 		{
 			$error = $validate->showErrors();
 		}
 		else
 		{
-			$database -> insert($outValidate);
+			if($action == "edit")
+			{
+				$where = array(array('id',$id));
+				$database -> update($outValidate,$where);
+			}
+			else
+			{
+				$database -> insert($outValidate);
+				$outValidate = array();
+			}
 			$success = '<div class="success">Success</div>';
 		}
 		if(isset($outValidate["status"]))
@@ -56,7 +100,15 @@
 	}
 	else
 	{
-		$status = HTML::createSelectbox($arrStatus, 'status');
+		if(isset($outValidate['status']))
+		{
+			$status = HTML::createSelectbox($arrStatus, 'status',$outValidate['status']);
+		}
+		else
+		{
+			$status = HTML::createSelectbox($arrStatus, 'status');
+		}
+		
 	}
 	
 ?>
@@ -65,18 +117,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="stylesheet" type="text/css" href="css/style.css">
-<title>PHP FILE - ADD</title>
+<title><?php echo $titlePage?></title>
 <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="js/my-js.js"></script>
 </head>
 <body>
 	<div id="wrapper">
-    	<div class="title">ADD-GROUP</div>
+    	<div class="title"><?php echo $titlePage?></div>
         <div id="form">
         	<?php 
         		echo $error . $success;
         	?>
-			<form action="#" method="post" name="add-form">
+			<form action="<?php echo $linkForm?>" method="post" name="add-form">
 				<div class="row">
 					<p>Name</p>
 					<input type="text" name="name" value="<?php echo (isset($outValidate['name']))? $outValidate['name']: '' ?>" />

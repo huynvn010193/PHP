@@ -61,7 +61,7 @@
 	                <p class="size">'.$item['ordering'].'</p>
 	                <p class="size">'.$item['total'].'</p>
 	                <p class="action">
-	                	<a href="edit.php?id='.$id.'">Edit</a> |
+	                	<a href="form.php?action=edit&id='.$id.'">Edit</a> |
 	                	<a href="delete.php?id='.$id.'">Delete</a>
 	                </p>
 	            </div>';
@@ -110,7 +110,7 @@
     	</div>
         
 	        <div id="area-button">
-	        	<a href="add.php">Add Group</a>
+	        	<a href="form.php?action=add">Add Group</a>
 	        	<a id="multy-delete" href="#">Delete Group</a>
 	        </div>
     

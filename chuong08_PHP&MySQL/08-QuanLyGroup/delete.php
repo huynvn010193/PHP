@@ -47,7 +47,7 @@
 		$id = $_POST['id'];
 		$query = "DELETE FROM `group` WHERE `id` = '$id'";
 		$database->query($query);
-		$xhtml = "Success";
+		$xhtml = "<div class='success'>Success</div> Click vào <a href='index.php'>đây</a> để quay lại trang quản lý.";
 	}
 	
 ?>

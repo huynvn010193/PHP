@@ -68,7 +68,8 @@
 	}
 	else
 	{
-		$status = HTML::createSelectbox($arrStatus, 'status',$outValidate["status"]);
+		
+		$status = HTML::createSelectbox($arrStatus, 'status',$outValidate['status']);
 	}
 	
 ?>
