@@ -16,7 +16,7 @@
 		$query = "SELECT `name`,`status`,`ordering` FROM `group` WHERE id = '".$id."'";
 		$outValidate = $database->singleRecord($query);
 		$linkForm = 'form.php?action=edit&id=' .$id;
-		$titlePage = "EDIT GROUP";
+		$titlePage = "EDIT USER";
 		if(empty($outValidate))
 		{
 			$flagRedirect = true;
@@ -24,7 +24,7 @@
 	}
 	else if($action == "add")
 	{
-		$titlePage = "ADD GROUP";
+		$titlePage = "ADD USER";
 		$linkForm = 'form.php?action=add';
 	}
 	else
@@ -89,6 +89,7 @@
 			}
 			$success = '<div class="success">Success</div>';
 		}
+
 		if(isset($outValidate["status"]))
 		{
 			$status = HTML::createSelectbox($arrStatus, 'status',$outValidate["status"]);
@@ -97,6 +98,14 @@
 		{
 			$status = HTML::createSelectbox($arrStatus, 'status');
 		}
+
+		// SELECT GROUP:
+		$query = "SELECT `id`,`name` FROM `group`";
+		$arrGroup = $database ->listRecord($query);
+		echo "<pre>";
+			print_r($arrGroup);
+		echo "</pre>";
+		$status = HTML::createSelectbox($arrStatus, 'status',$outValidate["status"]);
 	}
 	else
 	{
@@ -129,10 +138,24 @@
         	?>
 			<form action="<?php echo $linkForm?>" method="post" name="add-form">
 				<div class="row">
-					<p>Name</p>
-					<input type="text" name="name" value="<?php echo (isset($outValidate['name']))? $outValidate['name']: '' ?>" />
+					<p>Username</p>
+					<input type="text" name="name" value="<?php echo (isset($outValidate['username']))? $outValidate['name']: '' ?>" />
+				</div>
+				<div class="row">
+					<p>Email: </p>
+					<input type="text" name="email" value="<?php echo (isset($outValidate['email']))? $outValidate['email']: '' ?>" />
 				</div>
 				
+				<div class="row">
+					<p>Password: </p>
+					<input type="text" name="email" value="<?php echo (isset($outValidate['email']))? $outValidate['email']: '' ?>" />
+				</div>
+				
+				<div class="row">
+					<p>BirthDay: </p>
+					<input type="text" name="birthday" value="<?php echo (isset($outValidate['birthday']))? $outValidate['birthday']: '' ?>" />
+				</div>
+
 				<div class="row">
 					<p>Status</p>
 					<?php 
