@@ -21,4 +21,12 @@ $(document).ready(function(){
 	$(".success, .notice, .error").click(function(){
 		$(this).toggle("slow");
 	});
+
+	$("#birthday").datepicker({
+		dateFormat: "dd/mm/yy",
+		defaultDate: "+3d",
+		changeYear: true,
+		changeMonth:true,
+		yearRange:"2000:2015"
+	});
 });

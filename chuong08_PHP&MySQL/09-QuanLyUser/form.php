@@ -59,14 +59,22 @@
 		{
 			$_SESSION["token"] = $_POST["token"];
 		}
-		$source = array("name" => $_POST["name"],
-						"status" => $_POST["status"],
-						"ordering" => $_POST["ordering"]);
+		$source = array("username" 	=> $_POST["username"],
+						"email" 	=> $_POST["email"],
+						"password" 	=> $_POST["password"],
+						"birthday" 	=> $_POST["birthday"],
+						"status" 	=> $_POST["status"],
+						"gorupid" 	=> $_POST["gorupid"],
+						"ordering" 	=> $_POST["ordering"]);
 		
 		$validate = new Validate($source);
-		$validate 	->addRule('name','string',2,50)
+		$validate 	->addRule('username','string',2,50)
+					->addRule('email','email')
+					->addRule('password','password')
+					->addRule('birthday','birthday')
 					->addRule('ordering','int',1,10)
 					->addRule('status','status');
+					->addRule('gorupid','status');
 		$validate -> run();
 		$outValidate = $validate->getResult();
 		
@@ -111,8 +119,7 @@
 			$status = HTML::createSelectbox($arrStatus, 'status');
 			// SELECT GROUP:
 			$query = "SELECT `id`,`name` FROM `group`";
-			$arrGroup = $database ->listSelectBox($query);
-			$groupID = HTML::createSelectbox($arrGroup, 'gorupid'); //$outValidate['gorupid']
+			$groupID = $database ->listSelectBox($query,'gorupid');
 		}
 	}
 	
@@ -122,8 +129,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
 <title><?php echo $titlePage?></title>
 <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.js"></script>
 <script type="text/javascript" src="js/my-js.js"></script>
 </head>
 <body>
@@ -150,7 +159,7 @@
 				
 				<div class="row">
 					<p>BirthDay: </p>
-					<input type="text" name="birthday" value="<?php echo (isset($outValidate['birthday']))? $outValidate['birthday']: '' ?>" />
+					<input type="text" id="birthday" name="birthday" value="<?php echo (isset($outValidate['birthday']))? $outValidate['birthday']: '' ?>" />
 				</div>
 
 				<div class="row">

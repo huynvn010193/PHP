@@ -173,18 +173,29 @@ class Database
 	}
 
 	//LIST SELECTBOX
-	public function listSelectBox($query){
+	public function listSelectBox($query,$name,$keySelected = null, $class = null){
 		$result = array();
 		if(!empty($query)){
 			$resultQuery = $this->query($query);
 			if(mysql_num_rows($resultQuery) > 0){
+				$xhtml = '<select class = "'.$class.'" name = "'.$name.'">';
+				$xhtml .= '<option value="0">Select a value</option>';
 				while($row = mysql_fetch_assoc($resultQuery)){
-					$result[$row["id"]] = $row['name']; // => $row[1] = Admin , $row[2] = User...
+					//$result[$row["id"]] = $row['name']; // => $row[1] = Admin , $row[2] = User...
+					if($keySelected == $row["id"] && $keySelected != null)
+					{
+						$xhtml .= '<option value="'.$row["id"].'" selected="true">'.$row["name"].'</option>';
+					}
+					else
+					{
+						$xhtml .= '<option value="'.$row["id"].'">'.$row["name"].'</option>';
+					}
 				}
-				mysql_free_result($resultQuery);
+				$xhtml .= '</select>';
+				mysql_free_result($resultQuery); // Giài phóng bộ nhớ.
 			}
 		}
-		return $result;
+		return $xhtml;
 	}
 
 	
