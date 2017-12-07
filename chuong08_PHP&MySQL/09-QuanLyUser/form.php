@@ -5,7 +5,6 @@
 	require_once 'class/HTML.class.php';
 	$error 			= "";
 	$outValidate 	= array();
-	
 	$action = $_GET["action"];
 	$flagRedirect = false;
 	$titlePage = "";
@@ -98,13 +97,7 @@
 		{
 			$status = HTML::createSelectbox($arrStatus, 'status');
 		}
-
-		// SELECT GROUP:
-		$query = "SELECT `id`,`name` FROM `group`";
-		$arrGroup = $database ->listRecord($query);
-		echo "<pre>";
-			print_r($arrGroup);
-		echo "</pre>";
+		// SELECT STATUS.
 		$status = HTML::createSelectbox($arrStatus, 'status',$outValidate["status"]);
 	}
 	else
@@ -116,6 +109,10 @@
 		else
 		{
 			$status = HTML::createSelectbox($arrStatus, 'status');
+			// SELECT GROUP:
+			$query = "SELECT `id`,`name` FROM `group`";
+			$arrGroup = $database ->listSelectBox($query);
+			$groupID = HTML::createSelectbox($arrGroup, 'gorupid'); //$outValidate['gorupid']
 		}
 	}
 	
@@ -160,6 +157,12 @@
 					<p>Status</p>
 					<?php 
 						echo $status;
+					?>
+				</div>
+				<div class="row">
+					<p>Group</p>
+					<?php 
+						echo $groupID;
 					?>
 				</div>
 				<div class="row">

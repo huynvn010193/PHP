@@ -171,6 +171,22 @@ class Database
 		}
 		return $result;
 	}
+
+	//LIST SELECTBOX
+	public function listSelectBox($query){
+		$result = array();
+		if(!empty($query)){
+			$resultQuery = $this->query($query);
+			if(mysql_num_rows($resultQuery) > 0){
+				while($row = mysql_fetch_assoc($resultQuery)){
+					$result[$row["id"]] = $row['name']; // => $row[1] = Admin , $row[2] = User...
+				}
+				mysql_free_result($resultQuery);
+			}
+		}
+		return $result;
+	}
+
 	
 	//SINGLE RECORD
 	public function singleRecord($query){
