@@ -73,7 +73,7 @@
 					->addRule('password','password')
 					->addRule('birthday','birthday')
 					->addRule('ordering','int',1,10)
-					->addRule('status','status');
+					->addRule('status','status')
 					->addRule('gorupid','status');
 		$validate -> run();
 		$outValidate = $validate->getResult();
@@ -105,8 +105,6 @@
 		{
 			$status = HTML::createSelectbox($arrStatus, 'status');
 		}
-		// SELECT STATUS.
-		$status = HTML::createSelectbox($arrStatus, 'status',$outValidate["status"]);
 	}
 	else
 	{
@@ -144,8 +142,8 @@
         	?>
 			<form action="<?php echo $linkForm?>" method="post" name="add-form">
 				<div class="row">
-					<p>Username</p>
-					<input type="text" name="name" value="<?php echo (isset($outValidate['username']))? $outValidate['name']: '' ?>" />
+					<p>UserName</p>
+					<input type="text" name="username" value="<?php echo (isset($outValidate['username']))? $outValidate['username']: '' ?>" />
 				</div>
 				<div class="row">
 					<p>Email: </p>
@@ -154,7 +152,7 @@
 				
 				<div class="row">
 					<p>Password: </p>
-					<input type="text" name="email" value="<?php echo (isset($outValidate['email']))? $outValidate['email']: '' ?>" />
+					<input type="password" name="password" value="<?php echo (isset($outValidate['password']))? $outValidate['email']: '' ?>" />
 				</div>
 				
 				<div class="row">

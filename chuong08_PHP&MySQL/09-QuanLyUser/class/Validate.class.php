@@ -69,6 +69,12 @@ class Validate{
 					case 'status':
 						$this->validateStatus($element);
 						break;
+					case 'password':
+						$this->validatePassword($element);
+						break;
+					case 'date':
+						$this->validateDate($element,$value['min'] , $value['max']);
+						break;
 				}
 			}
 			if(!array_key_exists($element, $this->errors)) {
@@ -141,7 +147,21 @@ class Validate{
 		}
 	}
 	
-	
-	
-	
+	// Validate Password.
+	private function validatePassword($element){
+		$pattern = '#^(?=.*\d)(?=.*[A-Z])(?=.*\W).{8,8}$#';
+		$value = $this->errors[$element];
+		$flag = preg_match($pattern, $value);
+		if(!$flag)
+		{
+			$this->errors[$element] = "'".$this->source[$element]."' is an invalid password";
+		}
+	}
+
+	/*// Validate Date
+	private function validateStatus($element){
+		if($this->source[$element] < 0 || $this->source[$element] > 1){
+			$this->errors[$element] = "Select Status";
+		}
+	}*/
 }
