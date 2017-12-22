@@ -69,6 +69,9 @@ class Validate{
 					case 'status':
 						$this->validateStatus($element);
 						break;
+					case 'groupID':
+						$this->validateGroupID($element);
+						break;
 					case 'password':
 						$this->validatePassword($element);
 						break;
@@ -147,10 +150,17 @@ class Validate{
 		}
 	}
 	
+	// Validate GroupID
+	private function validateGroupID($element){
+		if($this->source[$element] == 0){
+			$this->errors[$element] = "Select GroupID";
+		}
+	}
+
 	// Validate Password.
 	private function validatePassword($element){
-		$pattern = '#^(?=.*\d)(?=.*[A-Z])(?=.*\W).{8,8}$#';
-		$value = $this->errors[$element];
+		$pattern = '#^(?=.*\d)(?=.*[A-Z])(?=.*\W).{8,100}$#';
+		$value = $this->source[$element];
 		$flag = preg_match($pattern, $value);
 		if(!$flag)
 		{

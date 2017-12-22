@@ -39,7 +39,8 @@
 	}
 	
 	$success = "";
-	$arrStatus 	= array(2 => "Select status", 0 => "Inactive", 1 => "Active");	
+	$arrStatus 	= array(2 => "Select status", 0 => "Inactive", 1 => "Active");
+	$query = "SELECT `id`,`name` FROM `group`";
 	if(!empty($_POST))
 	{
 		if(isset($_SESSION["token"]))
@@ -64,7 +65,7 @@
 						"password" 	=> $_POST["password"],
 						"birthday" 	=> $_POST["birthday"],
 						"status" 	=> $_POST["status"],
-						"gorupid" 	=> $_POST["gorupid"],
+						"groupid" 	=> $_POST["groupid"],
 						"ordering" 	=> $_POST["ordering"]);
 		
 		$validate = new Validate($source);
@@ -74,10 +75,9 @@
 					->addRule('birthday','birthday')
 					->addRule('ordering','int',1,10)
 					->addRule('status','status')
-					->addRule('gorupid','status');
+					->addRule('groupid','groupID');
 		$validate -> run();
 		$outValidate = $validate->getResult();
-		
 		if(!$validate->isValid())
 		{
 			$error = $validate->showErrors();
@@ -105,6 +105,14 @@
 		{
 			$status = HTML::createSelectbox($arrStatus, 'status');
 		}
+		if(isset($outValidate["groupid"]))
+		{
+			$groupID = $database ->listSelectBox($query,'groupid',$outValidate["groupid"]);
+		}
+		else
+		{
+			$groupID = $database ->listSelectBox($query,'groupid');
+		}
 	}
 	else
 	{
@@ -115,12 +123,16 @@
 		else
 		{
 			$status = HTML::createSelectbox($arrStatus, 'status');
-			// SELECT GROUP:
-			$query = "SELECT `id`,`name` FROM `group`";
-			$groupID = $database ->listSelectBox($query,'gorupid');
+		}
+		if(isset($outValidate["groupid"]))
+		{
+			$groupID = $database ->listSelectBox($query,'groupid',$outValidate["groupid"]);
+		}
+		else
+		{
+			$groupID = $database ->listSelectBox($query,'groupid');
 		}
 	}
-	
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -152,7 +164,7 @@
 				
 				<div class="row">
 					<p>Password: </p>
-					<input type="password" name="password" value="<?php echo (isset($outValidate['password']))? $outValidate['email']: '' ?>" />
+					<input type="password" name="password" value="<?php echo (isset($outValidate['password']))? $outValidate['password']: '' ?>" />
 				</div>
 				
 				<div class="row">
