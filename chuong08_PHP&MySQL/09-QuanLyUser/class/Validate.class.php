@@ -48,8 +48,8 @@ class Validate{
 	}
 	
 	// Add rule
-	public function addRule($element, $type, $min = 0, $max = 0, $required = true){
-		$this->rules[$element] = array('type' => $type, 'min' => $min, 'max' => $max, 'required' => $required);
+	public function addRule($element, $type,$options = null, $required = true){
+		$this->rules[$element] = array('type' => $type,"options" => $options , 'required' => $required);
 		return $this;
 	}
 	
@@ -61,10 +61,10 @@ class Validate{
 			}else{
 				switch ($value['type']) {
 					case 'int':
-						$this->validateInt($element, $value['min'], $value['max']);
+						$this->validateInt($element, $value['options']['min'], $value['max']);
 						break;
 					case 'string':
-						$this->validateString($element, $value['min'], $value['max']);
+						$this->validateString($element, $value['options']['min'], $value['max']);
 						break;
 					case 'url':
 						$this->validateUrl($element);
@@ -82,7 +82,10 @@ class Validate{
 						$this->validatePassword($element);
 						break;
 					case 'date':
-						$this->validateDate($element,$value['min'] , $value['max']);
+						$this->validateDate($element,$value['options']['start'] , $value['options']['end']);
+						break;
+					case 'existRecord':
+						$this->validateExistRecord($element,$value['options']['start'],$value["max"]);
 						break;
 				}
 			}

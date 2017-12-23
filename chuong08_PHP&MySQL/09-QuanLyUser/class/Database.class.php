@@ -256,6 +256,7 @@ class Database
 			$this->resultQuery = $this->query($query);
 		}
 		// nếu trả về có số lượng thì trả về đúng còn ngược lại trả về sai
+		// mysql_num_rows: đếm số dòng dữ liệu trong mảng.
 		if((mysql_num_rows($this->resultQuery)) > 0)
 		{
 			return true;

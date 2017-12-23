@@ -67,13 +67,13 @@
 						"status" 	=> $_POST["status"],
 						"groupid" 	=> $_POST["groupid"],
 						"ordering" 	=> $_POST["ordering"]);
-		
+		$queryCheckUsernameSame = "SELECT `username` FROM `user` WHERE `username` = '".$_POST["username"]."'";
 		$validate = new Validate($source);
-		$validate 	->addRule('username','string',2,50)
+		$validate 	->addRule('username','existRecord',array("database" => $database,"query"=>$queryCheckUsernameSame))
 					->addRule('email','email')
 					->addRule('password','password')
-					->addRule('birthday','date',"01/01/1980", date('d/m/Y',time()))
-					->addRule('ordering','int',1,10)
+					->addRule('birthday','date',array("start" => "01/01/1980","end" =>date('d/m/Y',time())))
+					->addRule('ordering','int',array("min" => 1,"max" =>10))
 					->addRule('status','status')
 					->addRule('groupid','groupID');
 		$validate -> run();
