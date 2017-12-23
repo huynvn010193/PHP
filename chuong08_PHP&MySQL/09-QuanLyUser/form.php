@@ -72,7 +72,7 @@
 		$validate 	->addRule('username','string',2,50)
 					->addRule('email','email')
 					->addRule('password','password')
-					->addRule('birthday','birthday')
+					->addRule('birthday','date',"01/01/1980", date('d/m/Y',time()))
 					->addRule('ordering','int',1,10)
 					->addRule('status','status')
 					->addRule('groupid','groupID');

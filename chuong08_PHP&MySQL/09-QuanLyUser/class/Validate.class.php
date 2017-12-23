@@ -35,6 +35,12 @@ class Validate{
 	public function getError(){
 		return $this->errors;
 	}
+
+	// Set Error [23/12/2017]
+	public function setError($element, $message){
+		// chuyển ký tự đầu tiên trong 1 từ thành chữ in hoa: ucfirst
+		$this->errors[$element] = '<b>' . ucfirst($element) . ':</b> ' .$message;
+	}
 	
 	// Get result
 	public function getResult(){
@@ -51,7 +57,7 @@ class Validate{
 	public function run(){
 		foreach($this->rules as $element => $value){
 			if($value['required'] == true && trim($this->source[$element])==null){
-				$this->errors[$element] = 'is not empty';
+				$this->setError($element,'is not empty');
 			}else{
 				switch ($value['type']) {
 					case 'int':
@@ -91,7 +97,8 @@ class Validate{
 	// Validate Integer
 	private function validateInt($element, $min = 0, $max = 0){
 		if(!filter_var($this->source[$element], FILTER_VALIDATE_INT, array("options"=>array("min_range"=>$min,"max_range"=>$max)))){
-			$this->errors[$element] = "'" . $this->source[$element] . "' is an invalid number";
+			//$this->errors[$element] = "'" . $this->source[$element] . "' is an invalid number";
+			$this->setError($element,'is an invalid number');
 		}
 	}
 	
@@ -99,25 +106,30 @@ class Validate{
 	private function validateString($element, $min = 0, $max = 0){
 		$length = strlen($this->source[$element]);
 		if($length < $min) {
-			$this->errors[$element] = "'" . $this->source[$element] . "' is too short";
+			//$this->errors[$element] = "'" . $this->source[$element] . "' is too short";
+			$this->setError($element,'is too short');
 		}elseif($length > $max){
-			$this->errors[$element] = "'" . $this->source[$element] . "' is too long";
+			//$this->errors[$element] = "'" . $this->source[$element] . "' is too long";
+			$this->setError($element,'is too long');
 		}elseif(!is_string($this->source[$element])){
-			$this->errors[$element] = "'" . $this->source[$element] . "' is an invalid string";
+			//$this->errors[$element] = "'" . $this->source[$element] . "' is an invalid string";
+			$this->setError($element,'is an invalid string');
 		}
 	}
 	
 	// Validate URL
 	private function validateURL($element){
 		if(!filter_var($this->source[$element], FILTER_VALIDATE_URL)){
-			$this->errors[$element] = "'" . $this->source[$element] . "' is an invalid url";
+			//$this->errors[$element] = "'" . $this->source[$element] . "' is an invalid url";
+			$this->setError($element,'is an invalid url');
 		}
 	}
 	
 	// Validate Email
 	private function validateEmail($element){
 		if(!filter_var($this->source[$element], FILTER_VALIDATE_EMAIL)){
-			$this->errors[$element] = "'" . $this->source[$element] . "' is an invalid email";
+			//$this->errors[$element] = "'" . $this->source[$element] . "' is an invalid email";
+			$this->setError($element,'is an invalid email');
 		}
 	}
 	
@@ -126,7 +138,8 @@ class Validate{
 		if(!empty($this->errors)){
 			$xhtml .= '<ul class="error">';
 			foreach($this->errors as $key => $value){
-				$xhtml .= '<li><b>'. ucfirst($key) .':</b> '.$value.' </li>';
+				//$xhtml .= '<li><b>'. ucfirst($key) .':</b> '.$value.' </li>';
+				$xhtml .= '<li>'.$value.' </li>';
 			}
 			$xhtml .=  '</ul>';
 		}
@@ -146,14 +159,16 @@ class Validate{
 	// Validate Status
 	private function validateStatus($element){
 		if($this->source[$element] < 0 || $this->source[$element] > 1){
-			$this->errors[$element] = "Select Status";
+			//$this->errors[$element] = "Select Status";
+			$this->setError($element,'Select Status');
 		}
 	}
 	
 	// Validate GroupID
 	private function validateGroupID($element){
 		if($this->source[$element] == 0){
-			$this->errors[$element] = "Select GroupID";
+			//$this->errors[$element] = "Select GroupID";
+			$this->setError($element,'Select GroupID');
 		}
 	}
 
@@ -164,14 +179,30 @@ class Validate{
 		$flag = preg_match($pattern, $value);
 		if(!$flag)
 		{
-			$this->errors[$element] = "'".$this->source[$element]."' is an invalid password";
+			//$this->errors[$element] = "'".$this->source[$element]."' is an invalid password";
+			$this->setError($element,'is an invalid password');
 		}
 	}
 
-	/*// Validate Date
-	private function validateStatus($element){
-		if($this->source[$element] < 0 || $this->source[$element] > 1){
-			$this->errors[$element] = "Select Status";
+	// Validate Date
+	private function validateDate($element,$start,$end){
+		//Start 
+		$arrDateStart 	= date_parse_from_format("d/m/Y", $start);
+		$tsStart 	= mktime(0,0,0,$arrDateStart['month'],$arrDateStart['day'],$arrDateStart['year']);
+
+		//End
+		$arrDateEnd = date_parse_from_format("d/m/Y", $end);
+		$tsEnd 		= mktime(0,0,0,$arrDateEnd['month'],$arrDateEnd['day'],$arrDateEnd['year']);
+
+		// Current
+		$arrDateCurrent = date_parse_from_format("d/m/Y", $this->source[$element]);
+		$tsCurrent 		= mktime(0,0,0,$arrDateCurrent['month'],$arrDateCurrent['day'],$arrDateCurrent['year']);
+
+		// So sánh
+		if($tsCurrent < $tsStart || $tsCurrent > $tsEnd)
+		{
+			//$this->errors[$element] = "'" . $this->source[$element] . "' is an invalid day";
+			$this->setError($element,'is an invalid day');
 		}
-	}*/
+	}
 }
