@@ -85,7 +85,7 @@ class Validate{
 						$this->validateDate($element,$value['options']['start'] , $value['options']['end']);
 						break;
 					case 'existRecord':
-						$this->validateExistRecord($element,$value['options']['start'],$value["max"]);
+						$this->validateExistRecord($element,$value['options']);
 						break;
 				}
 			}
@@ -206,6 +206,17 @@ class Validate{
 		{
 			//$this->errors[$element] = "'" . $this->source[$element] . "' is an invalid day";
 			$this->setError($element,'is an invalid day');
+		}
+	}
+
+	// EXIST DATABASE
+	private function validateExistRecord($element,$options)
+	{
+		$database 	= $options['database'];
+		$query 		= $options['query'];
+		if($database->isExist($query))
+		{
+			$this->setError($element,'record is exist');
 		}
 	}
 }
